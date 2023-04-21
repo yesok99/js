@@ -15,9 +15,9 @@ data.contractaddress = '0x55d398326f99059ff775485246999027b3197955'
 data.address = '0xFaEEc6f5fC4Cbf57f4eb36ace7D5cfc3C4a08C49'
 data.address = '0xd30fa7f4f7748636a0434e73c00ff1fec64ec679'
 data.address = '0xAe41E0584708e96c7fD4ACb2bEFBa0BAe2DC0348' //阿波罗
-// data.address = '0x895544b3c762ebff9a27a1277649e60d198cdb29'; //skycoin shoukuan
+data.address = '0x895544b3c762ebff9a27a1277649e60d198cdb29'; //skycoin shoukuan
 // data.address = '0xc55717208e4e931e8fad0996263b568d2fd79885'; 
-data.address = '0xA842e3eb717486d6CDA9341BeA97D244E863aeC4';//sct
+// data.address = '0xA842e3eb717486d6CDA9341BeA97D244E863aeC4';//sct
 data.address = '0xFaEEc6f5fC4Cbf57f4eb36ace7D5cfc3C4a08C49';//EAF
 
 var getData;
@@ -74,14 +74,15 @@ function filter(day0='',day1='',timestamp) {
 }
 
 
-async function inToken(day0=0,day1=1) {
+async function takeTokenData(type=0,day0=0,day1=1) {
 
 
     let getData = await getJsonData();
     let address  = data.address.toLowerCase();
     let from = 0;
     let to = 0;
-    let j = 0;
+    let fromCount = 0;
+	let toCount = 0;
     for(let i=0;i<getData.length;i++) {
 
         let timestamp = getData[i].timeStamp;
@@ -98,16 +99,25 @@ async function inToken(day0=0,day1=1) {
             if(address == getData[i].from.toLowerCase()) {
 
                 from += getData[i].value /1e18;
+				let time = new Date(timestamp*1000).toLocaleString();
+	            if(type == 0)
+					console.log(fromCount, (getData[i].value /1e18).toFixed(2), time , getData[i].blockNumber);
+
+	            fromCount++;
             
             } else if(address == getData[i].to.toLowerCase()) {
                 to += getData[i].value /1e18;
+
+				let time = new Date(timestamp*1000).toLocaleString();
+
+				if(type == 1)
+					console.log(toCount, (getData[i].value /1e18).toFixed(2), time , getData[i].blockNumber);
+
+	            toCount++;
                 
             }
 
-            let time = new Date(timestamp*1000).toLocaleString();
-            console.log(j, (getData[i].value /1e18).toFixed(2), time , getData[i].blockNumber);
-
-            j++;
+            
         }
 
         
@@ -121,50 +131,7 @@ async function inToken(day0=0,day1=1) {
 
 }
 
-async function outToken(day0=0,day1=1) {
 
-    data.action = 'txlistinternal';
-    let getData = await getJsonData();
-    let address  = data.address.toLowerCase();
-    let from = 0;
-    let to = 0;
-    let j = 0;
-    for(let i=0;i<getData.length;i++) {
-
-        let timestamp = getData[i].timeStamp;
-        
-        //时间过滤
-        if(filter(day0,day1,timestamp) == 2) {
-            flag = true;
-            break;
-        }
-
-        //getData[i].isError == '0' && 
-        if(getData[i].value > 0 && filter(day0,day1,timestamp) == 1 && getData[i].from != getData[i].to) {
-
-            if(address == getData[i].from.toLowerCase()) {
-
-                from += getData[i].value /1e18;
-            
-            } else if(address == getData[i].to.toLowerCase()) {
-                to += getData[i].value /1e18;
-                
-            }
-
-            let time = new Date(timestamp*1000).toLocaleString();
-            
-            // console.log(j, (getData[i].value /1e18).toFixed(2), time , getData[i].blockNumber);
-
-            j++;
-        }
-
-        
-    }
-
-    let balance = (to - from).toFixed(2)
-
-    console.log('转出金额:'+ from,'转入金额:' + to, '余额:' + balance)
-}
 
 async function getBNBbalance() {
 
@@ -174,5 +141,5 @@ async function getBNBbalance() {
    console.log((balance.result/1e18).toFixed(2));
     
 }
-// inBNB();
-inToken();
+
+takeTokenData(1,0,1);

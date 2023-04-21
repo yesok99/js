@@ -18,6 +18,7 @@ data.address = '0xAe41E0584708e96c7fD4ACb2bEFBa0BAe2DC0348' //阿波罗
 // data.address = '0x895544b3c762ebff9a27a1277649e60d198cdb29'; //skycoin shoukuan
 // data.address = '0xc55717208e4e931e8fad0996263b568d2fd79885'; 
 data.address = '0xA842e3eb717486d6CDA9341BeA97D244E863aeC4';//sct
+data.address = '0xFaEEc6f5fC4Cbf57f4eb36ace7D5cfc3C4a08C49';//EAF
 
 var getData;
 
@@ -112,7 +113,12 @@ async function inToken(day0=0,day1=1) {
         
     }
 
-    console.log('转出金额:'+ from,'转入金额:' + to)
+    let balance = (to - from).toFixed(2)
+
+    console.log('转出金额:'+ from,'转入金额:' + to, '余额:' + balance)
+
+
+
 }
 
 async function outToken(day0=0,day1=1) {
@@ -155,7 +161,9 @@ async function outToken(day0=0,day1=1) {
         
     }
 
-    console.log('转出金额:'+ from,'转入金额:' + to)
+    let balance = (to - from).toFixed(2)
+
+    console.log('转出金额:'+ from,'转入金额:' + to, '余额:' + balance)
 }
 
 async function getBNBbalance() {

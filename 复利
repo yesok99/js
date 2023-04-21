@@ -1,0 +1,54 @@
+// michong 复利
+var  days = 32 ;
+var  rate = 0.42;
+var tasks = Array();
+tasks.push([4.2,32]);
+var temAmount = 0;
+
+ 
+for(day=0;day<100;day++) {
+   
+    var temArray = Array();
+    
+    
+    for(i=0; i<tasks.length; i++) {
+    
+        temAmount = temAmount + tasks[i][0];
+        
+        if(tasks[i][1]-1 > 0 )
+            temArray.push([tasks[i][0], tasks[i][1]-1 ]);
+        
+    }
+    
+    while(temAmount >=10) {
+        temAmount = temAmount -10;
+        temArray.push([rate,days]);
+    }
+    
+    tasks = temArray ;
+}
+
+//total mili
+
+console.log(tasks)
+
+for(day=0;day<32;day++) {
+   
+    var temArray = Array();
+    
+    
+    for(i=0; i<tasks.length; i++) {
+    
+        temAmount = temAmount + tasks[i][0];
+        
+        if(tasks[i][1] > 1 )
+            temArray.push([tasks[i][0], tasks[i][1]-1 ]);
+        
+    }
+    
+    tasks = temArray ;
+}
+
+
+
+console.log(tasks.length,temAmount)

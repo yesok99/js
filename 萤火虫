@@ -1,0 +1,85 @@
+headers = {
+    'origin': 'https://mapi.firefly.pw',
+    'referer': 'https://mapi.firefly.pw',
+    'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1'
+}
+
+var data = {
+	"account": "@qq.com",
+	"password": "",
+	// "uuid": "9074DCD2-E406-419F-B61A-A17F5DFD5B10",
+	"uuid": "9074DCD2-E406-419F-B61A-A17F5DFD5B12",
+
+}
+
+function login() {
+
+    let url = 'https://mapi.firefly.pw/account/login';
+	let ret;
+	$.ajax({
+	    url: url,
+	    // data: data,
+	    data: JSON.stringify(data),
+	    type: "POST",
+	    dataType: "json",
+		// headers:headers,
+	    async: false,
+	    contentType: "application/json; charset=utf-8",
+		success:function (data,status) {
+            // console.log(data)
+            ret = {data:data,status:status};
+        },
+        error:function (data,status) {
+            ret = {data:data,status:status};
+
+        }
+	});
+
+	if(ret.status == 'success')
+
+	    return ret.data.data;
+	else 
+		return 'error'
+}
+
+
+
+
+function order(token) {
+	
+	let ret;
+
+    let url = 'https://zapi.firefly.pw/zorder/queryInterstellarExplorationOrder';
+	let data = {currency: 'FTF', userId: 184639};
+	
+	$.ajax({
+	    url: url,
+	    // data: data,
+	    data: JSON.stringify(data),
+	    type: "POST",
+	    dataType: "json",
+		headers:token,
+	    async: false,
+	    contentType: "application/json; charset=UTF-8",
+		success:function (data,status) {
+            // console.log(data)
+            ret = {data:data,status:status};
+        },
+        error:function (data,status) {
+            ret = {data:data,status:status};
+
+        }
+	});
+
+    return ret;
+}
+
+let info = login();
+
+
+if(info != 'error') {
+	
+    token = {token:info.token}
+	var o = order(token);
+	console.log(o);
+}
